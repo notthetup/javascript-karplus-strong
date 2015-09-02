@@ -1,3 +1,5 @@
+GuitarString = require('./guitarstring.js');
+
 // JavaScript's class definitions are just functions
 // the function itself serves as the constructor for the class
 function Guitar(audioCtx, audioDestination) {
@@ -52,18 +54,4 @@ Guitar.prototype.setMode = function(mode) {
     }
 };
 
-var guitar;
-var audioCtx = getAudioContext();
-
-var errorText = document.getElementById("guitarErrorText");
-
-if (audioCtx === null) {
-    errorText.innerHTML =
-        "Error obtaining audio context. Does your browser support Web Audio?";
-} else {
-    errorText.style.display = "none";
-    var guitarControls = document.getElementById("guitarControls");
-    guitarControls.style.display = "block";
-
-    guitar = new Guitar(audioCtx, audioCtx.destination);
-}
+module.exports = Guitar;

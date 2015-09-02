@@ -1,3 +1,5 @@
+var Guitar = require('./guitar.js');
+
 // this was derived experimentally to match Andre Michelle's
 // I've no idea how it works out as this...
 // it doesn't seem to appear in the ActionScript code anywhere...
@@ -9,7 +11,7 @@ var timeUnit = 0.12;
 // adjustment of guitar parameters with real-time feedback.
 // (The higher strumGenerationsPerRun, the longer the delay between
 //  parameter adjustments and samples created with the new parameters.)
-function queueStrums(sequenceN, blockStartTime, chordIndex, precacheTime) {
+function queueStrums(guitar,sequenceN, blockStartTime, chordIndex, precacheTime, audioCtx) {
     var chords = [
         Guitar.C_MAJOR,
         Guitar.G_MAJOR,
@@ -106,15 +108,19 @@ function queueStrums(sequenceN, blockStartTime, chordIndex, precacheTime) {
         generateIn = 0;
 
     nextGenerationCall = function() {
-        queueStrums(sequenceN, blockStartTime, chordIndex, precacheTime);
+        queueStrums(guitar,sequenceN, blockStartTime, chordIndex, precacheTime, audioCtx);
     };
     setTimeout(nextGenerationCall, generateIn * 1000);
 }
 
-function startGuitarPlaying() {
+function startGuitarPlaying(guitar, audioCtx) {
     var startSequenceN = 0;
     var blockStartTime = audioCtx.currentTime;
     var startChordIndex = 0;
     var precacheTime = 0.0;
-    queueStrums(startSequenceN, blockStartTime, startChordIndex, precacheTime);
+    queueStrums(guitar,startSequenceN, blockStartTime, startChordIndex, precacheTime, audioCtx);
+}
+
+module.exports = {
+    'startGuitarPlaying': startGuitarPlaying,
 }

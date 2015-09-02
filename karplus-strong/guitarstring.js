@@ -1,3 +1,5 @@
+AsmFunctionsWrapper = require('./guitarstring_asm.js');
+
 function GuitarString(
         audioCtx, audioDestination, stringN, octave, semitone) {
     this.audioCtx = audioCtx;
@@ -41,12 +43,12 @@ function GuitarString(
 GuitarString.prototype.pluck = function(startTime, velocity, tab) {
     // create the buffer we're going to write into
     var channels = 2;
-    var sampleRate = audioCtx.sampleRate;
+    var sampleRate = this.audioCtx.sampleRate;
     // 1 second buffer
     var sampleCount = 1.0 * sampleRate;
     var buffer = this.audioCtx.createBuffer(channels, sampleCount, sampleRate);
 
-    var options = getControlsValues();
+    var options = window.getControlsValues();
     var smoothingFactor = calculateSmoothingFactor(this, tab, options);
     // 'tab' represents which fret is held while plucking
     // each fret represents an increase in pitch by one semitone
@@ -86,3 +88,5 @@ GuitarString.prototype.pluck = function(startTime, velocity, tab) {
 
     bufferSource.start(startTime);
 };
+
+module.exports = GuitarString;
